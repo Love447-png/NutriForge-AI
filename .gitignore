@@ -1,0 +1,13 @@
+__pycache__/
+.DS_Store
+.venv/
+backend/.env
+frontend/.env
+*.env.local
+backend/app/data/uploads/
+backend/app/data/vector_store/
+backend/app/data/*.sqlite3
+backend/app/data/*.sqlite3-*
+frontend/node_modules/
+frontend/dist/
+frontend/tsconfig.app.tsbuildinfo

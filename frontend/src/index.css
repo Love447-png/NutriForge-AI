@@ -1,0 +1,68 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color: #1c2b2b;
+  font-family: "Noto Sans", "Noto Sans Devanagari", sans-serif;
+  background: #f7f9f7;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  min-width: 320px;
+  background: #f7f9f7;
+  color: #1c2b2b;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+.font-display {
+  font-family: "Sora", sans-serif;
+}
+
+button,
+a,
+input,
+select,
+textarea {
+  font-family: inherit;
+}
+
+button {
+  transition: transform 150ms ease, box-shadow 200ms ease;
+}
+
+button:hover {
+  transform: scale(1.02);
+}
+
+#root {
+  min-height: 100vh;
+}
+
+.input {
+  @apply w-full rounded-2xl border border-[#E5E7EB] bg-white px-4 py-3 text-[#1C2B2B] outline-none transition placeholder:text-slate-400 focus:border-[#1A7A4A] focus:ring-2 focus:ring-emerald-100;
+}
+
+@keyframes float {
+  0%,
+  100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
