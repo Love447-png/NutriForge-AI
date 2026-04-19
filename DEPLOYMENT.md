@@ -1,134 +1,97 @@
-# Render Deployment Guide for NutriForge
+# Vercel Deployment Guide for NutriForge
 
-This guide walks you through deploying your full-stack NutriForge application on Render.
+This guide walks you through deploying your NutriForge application on Vercel.
+
+## Important Note: Backend Deployment Required
+
+**Vercel is optimized for frontend applications.** Your FastAPI backend cannot be deployed directly to Vercel. You have two options:
+
+### Option 1: Deploy Backend Separately (Recommended)
+Deploy your backend to Render, Railway, or AWS, then connect it to your Vercel frontend.
+
+### Option 2: Use Vercel Serverless Functions (Advanced)
+Convert your FastAPI app to Vercel serverless functions (requires significant code changes).
+
+**This guide assumes Option 1** - deploying backend separately and frontend to Vercel.
 
 ## Prerequisites
 
-1. Render account (sign up at https://render.com)
-2. GitHub repository (your code must be pushed to GitHub)
-3. GitHub connected to Render
+1. Vercel account (sign up at https://vercel.com)
+2. GitHub repository connected to Vercel
+3. Backend already deployed (see backend deployment options below)
 
 ## Architecture
 
-Your deployment consists of:
-- **Backend**: FastAPI Python application on Render Web Service
-- **Frontend**: React/Vite application on Render Static Site
-- **Database**: PostgreSQL (Render-managed)
+- **Frontend**: React/Vite application on Vercel
+- **Backend**: FastAPI application (deploy separately to Render/Railway/AWS)
+- **Database**: PostgreSQL (managed by your backend provider)
 
 ## Step-by-Step Deployment
 
-### 1. Connect GitHub to Render
+### 1. Deploy Backend First
 
-1. Go to [render.com](https://render.com)
-2. Click "New" → "Blueprint" (or "Web Service" for individual services)
-3. Connect your GitHub account
-4. Select your `NutriForge-AI` repository
+Choose one of these options for your backend:
 
-### 2. Deploy Using Blueprint (Recommended)
+#### Option A: Deploy to Render (Recommended)
+1. Follow the Render deployment guide in `render.yaml`
+2. Note your backend URL: `https://nutriforge-backend.onrender.com`
 
-If you have the `render.yaml` file in your repository:
+#### Option B: Deploy to Railway
+1. Create Railway project
+2. Add Python service with your backend code
+3. Note your backend URL
 
-1. In Render dashboard, click "New" → "Blueprint"
-2. Select your repository
-3. Render will automatically detect the `render.yaml` file
-4. Click "Apply" to create all services at once
+#### Option C: Deploy to AWS/Heroku
+1. Use their respective deployment methods
+2. Note your backend URL
 
-### 3. Manual Service Creation (Alternative)
+### 2. Deploy Frontend to Vercel
 
-#### Backend Service (FastAPI)
+#### Method 1: GitHub Integration (Recommended)
 
-1. Click "New" → "Web Service"
-2. Configure:
-   - **Name**: `nutriforge-backend`
-   - **Runtime**: `Python 3`
-   - **Build Command**: `pip install -r requirements.txt && alembic upgrade head || true`
-   - **Start Command**: `gunicorn app.main:create_app --workers 4 --worker-class uvicorn.workers.UvicornWorker --bind 0.0.0.0:$PORT`
+1. Go to [vercel.com](https://vercel.com)
+2. Click "New Project"
+3. Import your GitHub repository (`NutriForge-AI`)
+4. Configure:
+   - **Framework Preset**: `Vite`
+   - **Root Directory**: `frontend`
+   - **Build Command**: `npm run build`
+   - **Output Directory**: `dist`
 
-3. Set Environment Variables:
+5. Set Environment Variables:
    ```
-   ENVIRONMENT=production
-   LOG_LEVEL=INFO
-   DATABASE_URL=[Render will provide this from database]
-   JWT_SECRET_KEY=[Generate a strong 32+ character key]
-   ALLOWED_ORIGINS=https://[your-frontend-url]
-   OLLAMA_BASE_URL=http://localhost:11434  # Update if using remote Ollama
-   LLM_MODEL=llama3.2:3b
-   VISION_MODEL=llava:7b
-   EMBED_MODEL=nomic-embed-text
-   PYTHONUNBUFFERED=1
+   VITE_API_BASE=https://your-backend-url.com/api
    ```
 
-4. Deploy the service
+6. Click "Deploy"
 
-#### Frontend Service (React/Vite)
+#### Method 2: Vercel CLI
 
-1. Click "New" → "Static Site"
-2. Configure:
-   - **Name**: `nutriforge-frontend`
-   - **Build Command**: `npm install && npm run build`
-   - **Publish Directory**: `dist`
+1. Install Vercel CLI: `npm i -g vercel`
+2. Login: `vercel login`
+3. Deploy: `vercel --prod`
+4. Set environment variable: `vercel env add VITE_API_BASE`
 
-3. Set Environment Variables:
-   ```
-   NODE_ENV=production
-   VITE_API_BASE=https://[your-backend-url]
-   ```
+### 3. Update Backend CORS
 
-4. Deploy the service
+After deployment, update your backend's `ALLOWED_ORIGINS` to include your Vercel domain:
+```
+ALLOWED_ORIGINS=https://nutriforge-[random].vercel.app
+```
 
-#### Database Service
+## Environment Variables
 
-1. Click "New" → "PostgreSQL"
-2. Configure:
-   - **Name**: `nutriforge-db`
-   - **Database**: `nutriforge`
-   - **User**: `nutriforge_user`
-   - **Plan**: Starter (free tier)
+### Frontend Environment Variables
+```
+VITE_API_BASE=https://your-backend-url.com/api
+```
 
-3. Render will automatically provide the `DATABASE_URL`
-
-### 4. Service Configuration
-
-**Important**: After deployment, update the CORS settings:
-
-1. In Backend service → Environment
-2. Update `ALLOWED_ORIGINS` to your frontend URL: `https://nutriforge-frontend.onrender.com`
-3. Update Frontend `VITE_API_BASE` to your backend URL: `https://nutriforge-backend.onrender.com`
-
-### 5. Critical Configuration Notes
-
-**Important**: Your backend depends on:
-- **Ollama models** - Make sure the Ollama service is accessible or provide remote URL
-- **ChromaDB** - Vector store (uses SQLite, works with Render's persistent disks)
-- **Data persistence** - Consider using Render's persistent disks for uploads/vector store
-
-To add persistent storage:
-1. In Backend Service → Settings → Persistent Disk
-2. Create disk at `/opt/render/project/app/data`
-3. Configure upload directories and vector stores in this volume
-
-### 6. Verify Deployment
-
-Once deployed:
-
-1. **Backend Health Check**:
-   ```bash
-   curl https://nutriforge-backend.onrender.com/api/health
-   ```
-
-2. **Frontend**: Visit `https://nutriforge-frontend.onrender.com`
-
-3. **Check Logs**:
-   - Render Dashboard → Service → Logs tab for any errors
-
-## Environment Variables Reference
-
-### Backend (.env for production)
+### Backend Environment Variables (on your backend provider)
 ```
 ENVIRONMENT=production
 DATABASE_URL=postgresql://user:pass@host/db
 JWT_SECRET_KEY=[strong-random-key-32-chars-minimum]
-ALLOWED_ORIGINS=https://frontend-domain.onrender.com
+ALLOWED_ORIGINS=https://your-vercel-domain.vercel.app
 LOG_LEVEL=INFO
 LLM_MODEL=llama3.2:3b
 VISION_MODEL=llava:7b
@@ -136,55 +99,96 @@ EMBED_MODEL=nomic-embed-text
 OLLAMA_BASE_URL=http://ollama-service:11434
 ```
 
-### Frontend (.env)
+## Troubleshooting the 404 Error
+
+The `404: NOT_FOUND` error you're seeing typically means:
+
+### 1. Build Configuration Issues
+- **Check Build Logs**: In Vercel dashboard → Project → Deployments → View Logs
+- **Verify Build Settings**:
+  - Root Directory: `frontend`
+  - Build Command: `npm run build`
+  - Output Directory: `dist`
+
+### 2. Routing Issues
+- **Missing `vercel.json`**: Ensure `vercel.json` is in your project root
+- **Incorrect Routes**: Verify the routes in `vercel.json` point to correct paths
+
+### 3. API Proxy Issues
+- **Backend URL**: Ensure `VITE_API_BASE` is set correctly
+- **CORS**: Make sure backend allows requests from Vercel domain
+- **Backend Status**: Verify backend is running and accessible
+
+### 4. Build Output Issues
+- **Check `dist` folder**: Run `npm run build` locally to ensure it creates `dist/`
+- **Static Assets**: Ensure all assets are in the correct output directory
+
+## Common Fixes
+
+### Fix 1: Check Vercel Configuration
+```json
+{
+  "version": 2,
+  "builds": [
+    {
+      "src": "frontend/package.json",
+      "use": "@vercel/static-build"
+    }
+  ],
+  "routes": [
+    {
+      "src": "/api/(.*)",
+      "dest": "https://your-backend-url.com/api/$1"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "/frontend/$1"
+    }
+  ]
+}
 ```
-VITE_API_BASE=https://backend-domain.onrender.com
+
+### Fix 2: Verify Build Locally
+```bash
+cd frontend
+npm run build
+ls -la dist/  # Should contain index.html, assets/, etc.
 ```
 
-## Troubleshooting
+### Fix 3: Check Environment Variables
+- In Vercel dashboard: Project → Settings → Environment Variables
+- Ensure `VITE_API_BASE` is set to your backend URL
 
-### Database Connection Issues
-- Ensure `DATABASE_URL` format is correct: `postgresql://user:pass@host:5432/dbname`
-- Check PostgreSQL service is running in Render
+### Fix 4: Redeploy
+Sometimes a fresh deployment fixes issues:
+- Vercel dashboard → Project → Deployments → Trigger new deployment
 
-### Ollama Model Access
-- If Ollama is on a separate machine, ensure it's accessible from Render
-- Update `OLLAMA_BASE_URL` to point to remote Ollama server
-- Test with: `curl $OLLAMA_BASE_URL/api/tags`
+## Backend Deployment Options
 
-### Frontend Can't Reach Backend
-- Verify `VITE_API_BASE` env variable is set correctly
-- Ensure CORS is enabled on backend
-- Check both services are running (Render dashboard)
+### Quick Backend Deployment (Render)
+1. Go to [render.com](https://render.com)
+2. New → Blueprint
+3. Connect your repo
+4. Use the `render.yaml` configuration
+5. Get your backend URL
 
-### Build Failures
-- Check Render logs for specific errors
-- Ensure all dependencies are in `requirements.txt` and `package.json`
-- Verify Python version compatibility (Render uses Python 3.11+)
-
-### Free Tier Limitations
-- Render's free tier sleeps after 15 minutes of inactivity
-- Cold starts may take 30-60 seconds
-- Consider upgrading to paid plans for production use
+### Alternative: Railway
+1. Go to [railway.app](https://railway.app)
+2. New Project → Deploy from GitHub
+3. Add services manually (see Railway docs)
 
 ## Next Steps
 
-1. Push these deployment files to GitHub:
-   ```bash
-   git add .
-   git commit -m "Add Render deployment configuration"
-   git push
-   ```
-
-2. Visit Render.com and create your project as described above
-
-3. Monitor deployment in Render dashboard
-
-4. Update DNS records to point to Render domains if using custom domains
+1. Deploy your backend first (Render recommended)
+2. Update `vercel.json` with your backend URL
+3. Deploy frontend to Vercel
+4. Test the full application
 
 ## Support
 
-For Render-specific issues, see: https://docs.render.com
+- **Vercel Issues**: https://vercel.com/docs
+- **Build Logs**: Check Vercel dashboard
+- **Community**: Vercel Discord or GitHub issues
    VISION_MODEL=llava:7b
    EMBED_MODEL=nomic-embed-text
    PYTHONUNBUFFERED=1
