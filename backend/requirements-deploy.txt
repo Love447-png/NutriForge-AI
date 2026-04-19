@@ -1,2 +1,0 @@
-# Deployment dependencies
-gunicorn==22.0.0

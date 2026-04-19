@@ -1,0 +1,52 @@
+services:
+  - type: web
+    name: nutriforge-backend
+    runtime: python3
+    buildCommand: pip install -r requirements.txt && alembic upgrade head || true
+    startCommand: gunicorn app.main:create_app --workers 4 --worker-class uvicorn.workers.UvicornWorker --bind 0.0.0.0:$PORT
+    envVars:
+      - key: ENVIRONMENT
+        value: production
+      - key: LOG_LEVEL
+        value: INFO
+      - key: DATABASE_URL
+        fromDatabase:
+          name: nutriforge-db
+          property: connectionString
+      - key: JWT_SECRET_KEY
+        generateValue: true
+      - key: ALLOWED_ORIGINS
+        fromService:
+          type: web
+          name: nutriforge-frontend
+          property: host
+      - key: OLLAMA_BASE_URL
+        value: http://localhost:11434
+      - key: LLM_MODEL
+        value: llama3.2:3b
+      - key: VISION_MODEL
+        value: llava:7b
+      - key: EMBED_MODEL
+        value: nomic-embed-text
+      - key: PYTHONUNBUFFERED
+        value: "1"
+
+  - type: web
+    name: nutriforge-frontend
+    runtime: static
+    buildCommand: npm install && npm run build
+    staticPublishPath: ./dist
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: VITE_API_BASE
+        fromService:
+          type: web
+          name: nutriforge-backend
+          property: host
+
+databases:
+  - name: nutriforge-db
+    databaseName: nutriforge
+    user: nutriforge_user
+    plan: starter
