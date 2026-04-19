@@ -10,62 +10,61 @@ const fadeUp = {
 
 export function LandingPage() {
   return (
-    <div className="space-y-0 overflow-hidden rounded-[28px] border border-[#E5E7EB] bg-white">
-      <section className="bg-[linear-gradient(135deg,#0a2e1a_0%,#1A7A4A_100%)] px-6 py-14 text-white sm:px-10 lg:px-14 lg:py-20">
-        <div className="mx-auto grid max-w-7xl gap-10 lg:grid-cols-[1.15fr_0.85fr] lg:items-center">
+    <div className="relative left-1/2 w-screen -translate-x-1/2 overflow-hidden bg-[#F7F9F7]">
+      <section className="relative overflow-hidden bg-[radial-gradient(circle_at_76%_18%,rgba(245,166,35,0.34),transparent_25%),radial-gradient(circle_at_16%_78%,rgba(34,197,94,0.26),transparent_28%),linear-gradient(135deg,#061b12_0%,#0f3d2e_48%,#1A7A4A_100%)] px-6 py-16 text-white sm:px-10 lg:px-14 lg:py-20">
+        <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(90deg,rgba(255,255,255,0.06)_1px,transparent_1px),linear-gradient(0deg,rgba(255,255,255,0.04)_1px,transparent_1px)] bg-[size:72px_72px] opacity-35" />
+        <div className="pointer-events-none absolute -right-24 top-20 h-72 w-72 rounded-full bg-[#F5A623]/20 blur-3xl" />
+        <div className="pointer-events-none absolute bottom-0 left-10 h-80 w-80 rounded-full bg-emerald-300/20 blur-3xl" />
+
+        <div className="relative mx-auto grid min-h-[calc(100svh-130px)] max-w-7xl gap-12 lg:grid-cols-[1.02fr_0.98fr] lg:items-center">
           <motion.div {...fadeUp}>
-            <p className="text-sm font-semibold uppercase tracking-[0.28em] text-[#F5A623]">Trusted child growth screening</p>
-            <h1 className="mt-6 whitespace-pre-line font-display text-[52px] font-bold leading-[0.94] sm:text-[64px]">
+            <div className="inline-flex items-center gap-2 rounded-2xl border border-white/20 bg-white/10 px-4 py-2 text-xs font-semibold uppercase tracking-[0.24em] text-[#F5A623] backdrop-blur-md">
+              <span className="h-2 w-2 rounded-full bg-[#F5A623] shadow-[0_0_18px_rgba(245,166,35,0.9)]" />
+              Trusted child growth screening
+            </div>
+            <h1 className="mt-7 max-w-4xl whitespace-pre-line font-display text-[52px] font-extrabold leading-[0.9] tracking-[-0.06em] sm:text-[76px]">
               {"Catch malnutrition\nbefore it catches\nyour child."}
             </h1>
-            <p className="mt-6 max-w-2xl text-[20px] leading-8 text-white/75">
-              NutriForge helps ASHA workers and parents check growth early, understand risk clearly, and get a ₹30/day personalized meal plan — running fully offline, no internet needed.
+            <p className="mt-7 max-w-2xl text-[20px] leading-8 text-white/78">
+              A calm, offline-first growth assessment for ASHA workers and parents: enter measurements, see risk clearly, and get a practical ₹30/day food plan families can follow.
             </p>
             <div className="mt-8 flex flex-wrap gap-3">
-              <Link to="/signup" className="inline-flex h-14 items-center rounded-2xl bg-white px-6 text-sm font-semibold text-[#1A7A4A] transition hover:scale-[1.02]">
+              <Link to="/signup" className="inline-flex h-14 items-center rounded-2xl bg-white px-7 text-sm font-bold text-[#0f3d2e] shadow-[0_20px_40px_rgba(0,0,0,0.22)] transition hover:scale-[1.02]">
                 Get Started →
               </Link>
-              <button type="button" className="inline-flex h-14 items-center rounded-2xl border border-white/50 px-6 text-sm font-semibold text-white transition hover:scale-[1.02]">
+              <button type="button" className="inline-flex h-14 items-center rounded-2xl border border-white/35 bg-white/10 px-6 text-sm font-semibold text-white backdrop-blur-md transition hover:scale-[1.02]">
                 Watch 2-min Demo
               </button>
             </div>
-            <div className="mt-8 flex flex-wrap gap-3 text-sm">
+            <div className="mt-8 grid max-w-2xl gap-3 text-sm sm:grid-cols-4">
               {["🔒 Private by default", "📋 Standard growth references", "🇮🇳 Built for India", "⚡ Works offline"].map((item) => (
-                <span key={item} className="rounded-full bg-white/10 px-4 py-2 text-white/90">
+                <span key={item} className="rounded-2xl border border-white/15 bg-white/10 px-4 py-3 text-white/90 backdrop-blur-md">
                   {item}
                 </span>
               ))}
             </div>
           </motion.div>
 
-          <motion.div {...fadeUp} className="relative">
-            <div className="animate-[float_6s_ease-in-out_infinite] rounded-[28px] border border-white/15 bg-white/10 p-4 backdrop-blur-md">
-              <div className="rounded-[24px] bg-white p-5 text-[#1C2B2B] shadow-2xl">
-                <div className="mb-4 flex items-center gap-2">
-                  <span className="h-3 w-3 rounded-full bg-[#FF5F56]" />
-                  <span className="h-3 w-3 rounded-full bg-[#FFBD2E]" />
-                  <span className="h-3 w-3 rounded-full bg-[#27C93F]" />
-                </div>
-                <div className="rounded-[20px] border border-[#E5E7EB] bg-[#F8FAFC] p-4">
-                  <p className="text-xs font-semibold uppercase tracking-[0.24em] text-[#1A7A4A]">Live Growth Review</p>
-                  <div className="mt-4 h-40 rounded-[20px] bg-[linear-gradient(180deg,#F0FDF4_0%,#ffffff_100%)] p-4">
-                    <div className="flex h-full items-end gap-3">
-                      <div className="h-16 w-10 rounded-t-2xl bg-[#D1FAE5]" />
-                      <div className="h-24 w-10 rounded-t-2xl bg-[#86EFAC]" />
-                      <div className="h-32 w-10 rounded-t-2xl bg-[#34D399]" />
-                      <div className="h-28 w-10 rounded-t-2xl bg-[#FCD34D]" />
-                    </div>
-                  </div>
-                  <div className="mt-4 rounded-[20px] border border-[#E5E7EB] bg-white p-4">
-                    <p className="font-display text-lg font-bold">Forge Plan</p>
-                    <p className="mt-2 text-sm text-slate-600">Sattu drink, khichdi, roasted chana, roti with dal.</p>
-                  </div>
-                </div>
-              </div>
-            </div>
+          <motion.div {...fadeUp} className="relative min-h-[540px]">
+            <HeroVisual />
           </motion.div>
         </div>
       </section>
+
+      <motion.section {...fadeUp} className="bg-[#F7F9F7] px-6 py-8 sm:px-10 lg:px-14">
+        <div className="mx-auto grid max-w-7xl gap-4 md:grid-cols-3">
+          {[
+            ["60 sec", "from profile to action plan"],
+            ["₹30/day", "plans built around real budgets"],
+            ["0–5 yrs", "made for early growth monitoring"],
+          ].map(([value, label]) => (
+            <div key={value} className="rounded-[28px] border border-[#E5E7EB] bg-white p-6 shadow-[0_24px_70px_rgba(15,23,42,0.06)]">
+              <p className="font-display text-4xl font-extrabold tracking-[-0.04em] text-[#1A7A4A]">{value}</p>
+              <p className="mt-2 text-sm font-medium text-[#6B7280]">{label}</p>
+            </div>
+          ))}
+        </div>
+      </motion.section>
 
       <motion.section {...fadeUp} className="bg-white px-6 py-16 sm:px-10 lg:px-14">
         <div className="mx-auto max-w-7xl">
@@ -192,6 +191,76 @@ export function LandingPage() {
           © 2025 NutriForge. Not a medical device. For reference only — consult a doctor for medical decisions.
         </div>
       </footer>
+    </div>
+  );
+}
+
+function HeroVisual() {
+  return (
+    <div className="absolute inset-0">
+      <div className="absolute left-1/2 top-1/2 h-[520px] w-[520px] -translate-x-1/2 -translate-y-1/2 rounded-full border border-white/10 bg-white/5 shadow-[0_30px_120px_rgba(7,35,20,0.28)] backdrop-blur-sm">
+        <div className="absolute inset-12 rounded-full border border-dashed border-white/20" />
+        <div className="absolute inset-24 rounded-full border border-white/10 bg-emerald-300/10" />
+        <div className="absolute left-1/2 top-1/2 h-40 w-40 -translate-x-1/2 -translate-y-1/2 rounded-full bg-[radial-gradient(circle,#F5A623_0%,#22c55e_48%,rgba(34,197,94,0)_70%)] opacity-70 blur-2xl" />
+      </div>
+
+      <div className="absolute left-10 top-4 animate-[float_7s_ease-in-out_infinite] rounded-[30px] border border-white/20 bg-white/95 p-5 text-[#1C2B2B] shadow-[0_30px_90px_rgba(15,23,42,0.20)]">
+        <div className="flex items-center justify-between gap-12">
+          <div>
+            <p className="text-xs font-bold uppercase tracking-[0.22em] text-[#1A7A4A]">Live Review</p>
+            <p className="mt-2 font-display text-2xl font-extrabold tracking-[-0.04em]">Needs Attention</p>
+          </div>
+          <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-amber-100 text-2xl">!</div>
+        </div>
+        <div className="mt-5 h-3 rounded-full bg-gradient-to-r from-[#22c55e] via-[#fbbf24] to-[#ef4444]">
+          <div className="ml-[62%] h-5 w-5 -translate-y-1 rounded-full border-4 border-white bg-[#F5A623] shadow-md" />
+        </div>
+        <div className="mt-4 grid grid-cols-3 gap-3">
+          {["Weight", "Height", "MUAC"].map((label, index) => (
+            <div key={label} className="rounded-2xl bg-[#F7F9F7] p-3">
+              <p className="text-[10px] font-bold uppercase tracking-[0.18em] text-slate-500">{label}</p>
+              <p className="mt-2 font-display text-xl font-bold text-[#1A7A4A]">{index === 0 ? "7.5" : index === 1 ? "72" : "125"}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <div className="absolute bottom-10 right-4 animate-[float_8s_ease-in-out_infinite] rounded-[34px] border border-white/20 bg-white p-5 text-[#1C2B2B] shadow-[0_30px_90px_rgba(15,23,42,0.18)]">
+        <div className="mb-4 flex items-center justify-between">
+          <p className="font-display text-xl font-extrabold">Forge Plan</p>
+          <span className="rounded-2xl bg-[#1A7A4A] px-3 py-1 text-xs font-bold text-white">₹35/day</span>
+        </div>
+        <div className="space-y-3">
+          {[
+            ["सुबह", "Sattu drink", "₹8"],
+            ["दोपहर", "Khichdi", "₹12"],
+            ["रात", "Roti + dal", "₹10"],
+          ].map(([time, meal, cost]) => (
+            <div key={time} className="flex items-center justify-between gap-10 rounded-2xl border border-[#E5E7EB] bg-[#F9FAFB] p-3">
+              <div>
+                <p className="text-xs font-bold text-[#1A7A4A]">{time}</p>
+                <p className="text-sm font-semibold">{meal}</p>
+              </div>
+              <p className="text-xs font-bold text-slate-500">{cost}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <div className="absolute right-20 top-24 animate-[float_9s_ease-in-out_infinite] rounded-[28px] border border-white/20 bg-[#0b1812]/75 p-5 text-white shadow-[0_30px_90px_rgba(0,0,0,0.25)] backdrop-blur-xl">
+        <p className="text-xs font-bold uppercase tracking-[0.22em] text-[#F5A623]">12 month outlook</p>
+        <div className="mt-5 flex h-32 items-end gap-3">
+          {[42, 56, 70, 86].map((height, index) => (
+            <div key={height} className="w-10 rounded-t-2xl bg-gradient-to-t from-[#22c55e] to-[#F5A623]" style={{ height }} />
+          ))}
+        </div>
+        <p className="mt-4 text-sm text-white/75">Without action vs with plan</p>
+      </div>
+
+      <div className="absolute bottom-16 left-4 rounded-3xl border border-white/15 bg-white/10 px-5 py-4 text-white backdrop-blur-md">
+        <p className="text-xs uppercase tracking-[0.22em] text-white/60">Offline engine</p>
+        <p className="mt-1 font-display text-2xl font-bold">Ready</p>
+      </div>
     </div>
   );
 }
