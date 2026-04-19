@@ -1,0 +1,25 @@
+{
+  "services": [
+    {
+      "id": "backend",
+      "name": "NutriForge Backend",
+      "buildCommand": "pip install -r backend/requirements.txt gunicorn && alembic upgrade head || true",
+      "startCommand": "cd backend && gunicorn app.main:create_app --workers 4 --worker-class uvicorn.workers.UvicornWorker --bind 0.0.0.0:8000",
+      "healthCheck": "/api/health",
+      "port": 8000,
+      "environmentVariables": {
+        "PYTHONUNBUFFERED": "1"
+      }
+    },
+    {
+      "id": "frontend",
+      "name": "NutriForge Frontend",
+      "buildCommand": "cd frontend && npm install && npm run build",
+      "startCommand": "cd frontend && npx serve -s dist -l 3000",
+      "port": 3000,
+      "environmentVariables": {
+        "NODE_ENV": "production"
+      }
+    }
+  ]
+}
