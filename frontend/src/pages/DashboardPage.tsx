@@ -128,9 +128,9 @@ export function DashboardPage() {
             <p className="mt-3 max-w-3xl text-base leading-7 text-[#4B5563]">{heroMessage}</p>
             <div className="mt-5 flex flex-wrap gap-3">
               {[
-                { icon: <ShieldCheck className="h-4 w-4" />, label: "WHO-aligned" },
-                { icon: <TrendingUp className="h-4 w-4" />, label: "12-month trajectory" },
-                { icon: <Stethoscope className="h-4 w-4" />, label: "Localized care plan" },
+                { icon: <ShieldCheck className="h-4 w-4" />, label: "Trusted growth check" },
+                { icon: <TrendingUp className="h-4 w-4" />, label: "Recovery outlook" },
+                { icon: <Stethoscope className="h-4 w-4" />, label: "Local food plan" },
               ].map((item) => (
                 <div key={item.label} className="inline-flex items-center gap-2 rounded-2xl border border-[#E5E7EB] bg-[#F9FAFB] px-3 py-2 text-sm font-medium text-[#4B5563]">
                   {item.icon}
@@ -147,23 +147,24 @@ export function DashboardPage() {
         </div>
       </section>
 
-      <section id="dashboard-results" className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)] 2xl:grid-cols-[minmax(0,0.95fr)_minmax(0,1.1fr)_minmax(340px,0.9fr)]">
-        <InputCard loading={loading} engineReady={engineReady} onPhotoPreviewChange={setPhotoPreview} onSubmit={handleSubmit} />
+      <section id="dashboard-results" className="space-y-6">
+        <div className="grid gap-6 xl:grid-cols-[minmax(340px,0.92fr)_minmax(0,1.08fr)]">
+          <InputCard loading={loading} engineReady={engineReady} onPhotoPreviewChange={setPhotoPreview} onSubmit={handleSubmit} />
 
-        <motion.section whileHover={{ y: -2 }} className="rounded-[24px] border border-[#E5E7EB] bg-white p-6 lg:col-span-1">
-          <div className="mb-6 flex items-center justify-between gap-4">
-            <div>
-              <p className="text-xs font-semibold uppercase tracking-[0.24em] text-[#1A7A4A]">Health Status</p>
-              <h2 className="mt-2 font-display text-2xl font-bold text-[#1C2B2B]">Is my child safe?</h2>
-            </div>
-            {result ? (
-              <div className="rounded-2xl px-4 py-2 text-sm font-semibold" style={{ color: riskDisplay.color, backgroundColor: riskDisplay.bg }}>
-                {riskDisplay.label}
+          <motion.section whileHover={{ y: -2 }} className="rounded-2xl border border-[#E5E7EB] bg-white p-6">
+            <div className="mb-6 flex items-center justify-between gap-4">
+              <div>
+                <p className="text-xs font-semibold uppercase tracking-[0.24em] text-[#1A7A4A]">Health Status</p>
+                <h2 className="mt-2 font-display text-2xl font-bold text-[#1C2B2B]">Is my child safe?</h2>
               </div>
-            ) : null}
-          </div>
+              {result ? (
+                <div className="rounded-2xl px-4 py-2 text-sm font-semibold" style={{ color: riskDisplay.color, backgroundColor: riskDisplay.bg }}>
+                  {riskDisplay.label}
+                </div>
+              ) : null}
+            </div>
 
-          <div className="flex min-h-[360px] flex-col justify-between gap-6">
+            <div className="flex min-h-[300px] flex-col justify-between gap-6">
             {loading ? (
               <LoadingState message={loadingMessage} />
             ) : error ? (
@@ -249,16 +250,19 @@ export function DashboardPage() {
             ) : (
               <EmptyCenterState />
             )}
-          </div>
-        </motion.section>
+            </div>
+          </motion.section>
+        </div>
 
-        <div className="space-y-4 lg:col-span-2 2xl:col-span-1">
-          <Panel title="Growth Chart" subtitle="Current measurement, WHO reference range, and projected trajectories.">
+        <div className="grid gap-6 xl:grid-cols-[minmax(0,1.12fr)_minmax(360px,0.88fr)]">
+          <Panel title="Growth Chart" subtitle="Shows this child’s current growth and projected recovery path.">
             <GrowthChart trajectory={result?.growth.trajectory_projection ?? null} child={result?.child ?? { age_months: 0, sex: "female", height_cm: 0, weight_kg: 0, state: "", region: "", household_budget_inr: 50 }} />
           </Panel>
 
           <ForgePlan result={result} />
+        </div>
 
+        <div className="grid gap-6 xl:grid-cols-[0.95fr_1.05fr]">
           <Panel title="Future Risk" subtitle="Projected warning window if the current diet pattern continues.">
             {result ? (
               <div className="space-y-3">
@@ -280,16 +284,16 @@ export function DashboardPage() {
                 })}
               </div>
             ) : (
-              <div className="rounded-[22px] bg-slate-50 p-5 text-sm leading-6 text-slate-500">Future risk timelines will appear after the first assessment.</div>
+              <div className="rounded-2xl bg-[#F9FAFB] p-5 text-sm leading-6 text-slate-500">Future risk timelines will appear after the first assessment.</div>
             )}
           </Panel>
 
-          <Panel title="Photo Insight" subtitle="Visual analysis is supplementary and appears after upload.">
-            <div className="overflow-hidden rounded-[24px] bg-gradient-to-br from-emerald-50 via-white to-sky-50">
+          <Panel title="Photo Insight" subtitle="Optional visual review appears after upload.">
+            <div className="overflow-hidden rounded-2xl bg-gradient-to-br from-emerald-50 via-white to-sky-50">
               <div className="relative p-4">
-                <div className="mb-4 flex h-44 items-center justify-center rounded-[24px] bg-white/90 shadow-inner">
+                <div className="mb-4 flex h-44 items-center justify-center rounded-2xl bg-white/90 shadow-inner">
                   {photoPreview ? (
-                    <img src={photoPreview} alt="Uploaded child" className="h-full w-full rounded-[24px] object-cover" />
+                    <img src={photoPreview} alt="Uploaded child" className="h-full w-full rounded-2xl object-cover" />
                   ) : (
                     <div className="flex flex-col items-center gap-3 text-center text-slate-500">
                       <svg width="86" height="86" viewBox="0 0 86 86" fill="none" aria-hidden="true">
@@ -300,7 +304,7 @@ export function DashboardPage() {
                     </div>
                   )}
                 </div>
-                <div className="rounded-[22px] bg-white/90 p-4 shadow-[0_10px_25px_rgba(15,23,42,0.06)]">
+                <div className="rounded-2xl bg-white/90 p-4 shadow-[0_10px_25px_rgba(15,23,42,0.06)]">
                   <p className="text-sm leading-6 text-slate-700">{result ? result.vision.summary : "Visual assessment will appear here after a child photo is added and the assessment is complete."}</p>
                   <div className="mt-3 flex flex-wrap gap-2">
                     {(result ? result.vision.indicators : ["Photo optional", "Offline-ready", "Supports local review"]).map((indicator) => (
@@ -329,7 +333,7 @@ export function DashboardPage() {
 
 function EmptyCenterState() {
   return (
-      <div className="flex h-full min-h-[320px] flex-col items-center justify-center rounded-[28px] bg-[#F9FAFB] px-8 text-center">
+    <div className="flex h-full min-h-[280px] flex-col items-center justify-center rounded-2xl bg-[#F9FAFB] px-8 text-center">
       <svg width="80" height="80" viewBox="0 0 80 80" fill="none" aria-hidden="true" className="text-[#1A7A4A]">
         <rect x="14" y="14" width="52" height="52" rx="12" fill="currentColor" fillOpacity="0.08" />
         <path d="M24 52L34 41L42 47L56 31" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" />
@@ -349,7 +353,7 @@ function EmptyCenterState() {
 
 function LoadingState({ message }: { message: string }) {
   return (
-    <div className="flex h-full min-h-[320px] flex-col items-center justify-center rounded-[28px] bg-[#F9FAFB] px-8 text-center">
+    <div className="flex h-full min-h-[280px] flex-col items-center justify-center rounded-2xl bg-[#F9FAFB] px-8 text-center">
       <div className="h-12 w-12 animate-spin rounded-full border-4 border-emerald-100 border-t-[#1A7A4A]" />
       <h3 className="mt-6 text-[20px] font-bold text-[#1C2B2B]">{message}</h3>
       <p className="mt-3 max-w-md text-sm leading-6 text-slate-500">NutriForge is using the form values you entered to calculate growth, risk, and the plan.</p>

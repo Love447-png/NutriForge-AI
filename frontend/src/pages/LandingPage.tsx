@@ -11,15 +11,15 @@ const fadeUp = {
 export function LandingPage() {
   return (
     <div className="space-y-0 overflow-hidden rounded-[28px] border border-[#E5E7EB] bg-white">
-      <section className="min-h-[82vh] bg-[linear-gradient(135deg,#0a2e1a_0%,#1A7A4A_100%)] px-6 py-12 text-white sm:px-10 lg:px-14 lg:py-16">
+      <section className="bg-[linear-gradient(135deg,#0a2e1a_0%,#1A7A4A_100%)] px-6 py-14 text-white sm:px-10 lg:px-14 lg:py-20">
         <div className="mx-auto grid max-w-7xl gap-10 lg:grid-cols-[1.15fr_0.85fr] lg:items-center">
           <motion.div {...fadeUp}>
-            <p className="text-sm font-semibold uppercase tracking-[0.28em] text-[#F5A623]">Powered by WHO 2006 Standards</p>
+            <p className="text-sm font-semibold uppercase tracking-[0.28em] text-[#F5A623]">Trusted child growth screening</p>
             <h1 className="mt-6 whitespace-pre-line font-display text-[52px] font-bold leading-[0.94] sm:text-[64px]">
               {"Catch malnutrition\nbefore it catches\nyour child."}
             </h1>
             <p className="mt-6 max-w-2xl text-[20px] leading-8 text-white/75">
-              NutriForge gives ASHA workers and parents a WHO-certified growth assessment and a ₹30/day personalized meal plan — running fully offline, no internet needed.
+              NutriForge helps ASHA workers and parents check growth early, understand risk clearly, and get a ₹30/day personalized meal plan — running fully offline, no internet needed.
             </p>
             <div className="mt-8 flex flex-wrap gap-3">
               <Link to="/signup" className="inline-flex h-14 items-center rounded-2xl bg-white px-6 text-sm font-semibold text-[#1A7A4A] transition hover:scale-[1.02]">
@@ -30,7 +30,7 @@ export function LandingPage() {
               </button>
             </div>
             <div className="mt-8 flex flex-wrap gap-3 text-sm">
-              {["🔒 Zero data collection", "📋 WHO 2006 certified", "🇮🇳 28 Indian states", "⚡ Works offline"].map((item) => (
+              {["🔒 Private by default", "📋 Standard growth references", "🇮🇳 Built for India", "⚡ Works offline"].map((item) => (
                 <span key={item} className="rounded-full bg-white/10 px-4 py-2 text-white/90">
                   {item}
                 </span>
@@ -95,7 +95,7 @@ export function LandingPage() {
             <BulletColumn
               title="What NutriForge provides"
               items={[
-                "WHO-certified Z-score assessment in 60 seconds",
+                "Clear growth assessment in 60 seconds",
                 "100% offline — works on any laptop or Android",
                 "₹30/day forge plan using foods from local markets",
               ]}
@@ -111,10 +111,10 @@ export function LandingPage() {
           <h2 className="mt-3 font-display text-4xl font-bold text-[#1C2B2B]">From measurements to meal plan in 60 seconds</h2>
           <div className="mt-10 grid gap-5 lg:grid-cols-3">
             <StepCard number="01" title="Enter child measurements" body="Age, weight, height, and optional MUAC. Takes 30 seconds." />
-            <StepCard number="02" title="WHO engine detects risk" body="Deterministic Z-score calculation using WHO 2006 LMS tables. Not AI guesswork — actual clinical standards." />
+            <StepCard number="02" title="NutriForge detects risk" body="The app compares the child’s measurements with recognized growth references and gives a clear risk status." />
             <StepCard number="03" title="Get your Forge Plan" body="A personalized ₹30/day meal plan using foods available in your district. In Hindi and English." />
           </div>
-          <p className="mt-8 text-sm font-semibold text-[#1A7A4A]">Trusted by WHO growth standards used in 140+ countries</p>
+          <p className="mt-8 text-sm font-semibold text-[#1A7A4A]">Built around child growth standards used by public health teams worldwide</p>
         </div>
       </motion.section>
 
@@ -123,7 +123,7 @@ export function LandingPage() {
           <h2 className="font-display text-4xl font-bold text-[#1C2B2B]">Built for the field. Trusted by standards.</h2>
           <div className="mt-10 grid gap-4 md:grid-cols-2 xl:grid-cols-3">
             {[
-              ["🎯 Clinical Accuracy", "WHO 2006 LMS Z-score engine. Matches WHO Anthro software output."],
+              ["🎯 Clear Growth Screening", "Compares age, height, weight, and MUAC to recognized child growth references."],
               ["🔒 100% Private", "All data stays on your device. Nothing is sent to any server."],
               ["🍽️ Forge Plan", "Region-specific recipes under ₹50/day. Bihar gets Bihar food."],
               ["📈 12-Month Trajectory", "See where the child is headed — and how the forge plan changes that."],

@@ -37,7 +37,7 @@ export function ForgePlan({ result }: { result: AnalysisResponse | null }) {
   return (
     <Panel
       title="Forge Plan"
-      subtitle="Powered by local food data"
+      subtitle="Meals selected for this child’s state and daily budget."
       className="border-[#E5E7EB] bg-white"
     >
       <div className="space-y-4">
@@ -52,7 +52,7 @@ export function ForgePlan({ result }: { result: AnalysisResponse | null }) {
             <Flame className="h-5 w-5 text-[#F5A623]" />
             <div>
               <p className="font-display text-lg font-bold">Forge Plan</p>
-              <p className="text-xs text-slate-500">Powered by local food data</p>
+              <p className="text-xs text-slate-500">Practical meals matched to the child’s budget.</p>
             </div>
           </div>
           <span className="rounded-full bg-[#1A7A4A] px-4 py-2 text-xs font-semibold text-white">₹{result.nutrition.estimated_daily_cost_inr}/day</span>

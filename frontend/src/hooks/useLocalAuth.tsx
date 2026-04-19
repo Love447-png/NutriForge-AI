@@ -19,11 +19,9 @@ type LoginPayload = SessionUser & {
 
 type AuthContextValue = {
   user: SessionUser | null;
-  isGuest: boolean;
   needsOnboarding: boolean;
   login: (user: LoginPayload) => Promise<void>;
   signup: (user: LoginPayload) => Promise<void>;
-  continueAsGuest: () => void;
   completeOnboarding: (payload: { state: string; languagePreference: "en" | "hi" }) => void;
   logout: () => Promise<void>;
 };
@@ -31,7 +29,6 @@ type AuthContextValue = {
 const STORAGE_KEY = "nutriforge-session";
 const ACCESS_TOKEN_KEY = "nutriforge-access-token";
 const REFRESH_TOKEN_KEY = "nutriforge-refresh-token";
-const GUEST_KEY = "nutriforge-guest";
 const ONBOARDING_KEY = "nutriforge-onboarding";
 const AuthContext = createContext<AuthContextValue | null>(null);
 
@@ -45,15 +42,12 @@ function persistUser(user: SessionUser | null) {
 
 export function LocalAuthProvider({ children }: PropsWithChildren) {
   const [user, setUser] = useState<SessionUser | null>(null);
-  const [isGuest, setIsGuest] = useState(false);
   const [needsOnboarding, setNeedsOnboarding] = useState(false);
 
   useEffect(() => {
     try {
       const saved = localStorage.getItem(STORAGE_KEY);
-      const guest = localStorage.getItem(GUEST_KEY) === "true";
       const savedRefresh = localStorage.getItem(REFRESH_TOKEN_KEY);
-      setIsGuest(guest);
       if (saved) {
         setUser(JSON.parse(saved) as SessionUser);
         setNeedsOnboarding(localStorage.getItem(ONBOARDING_KEY) !== "done");
@@ -82,14 +76,12 @@ export function LocalAuthProvider({ children }: PropsWithChildren) {
       }
     } catch {
       setUser(null);
-      setIsGuest(false);
     }
   }, []);
 
   const value = useMemo<AuthContextValue>(
     () => ({
       user,
-      isGuest,
       needsOnboarding,
       login: async (nextUser) => {
         const session = await signin({ email: nextUser.email, password: nextUser.password ?? "" });
@@ -106,8 +98,6 @@ export function LocalAuthProvider({ children }: PropsWithChildren) {
         };
         setUser(mapped);
         persistUser(mapped);
-        setIsGuest(false);
-        localStorage.removeItem(GUEST_KEY);
         setNeedsOnboarding(localStorage.getItem(ONBOARDING_KEY) !== "done");
       },
       signup: async (nextUser) => {
@@ -131,14 +121,8 @@ export function LocalAuthProvider({ children }: PropsWithChildren) {
         };
         setUser(mapped);
         persistUser(mapped);
-        setIsGuest(false);
         setNeedsOnboarding(true);
         localStorage.setItem(ONBOARDING_KEY, "pending");
-      },
-      continueAsGuest: () => {
-        setUser(null);
-        setIsGuest(true);
-        localStorage.setItem(GUEST_KEY, "true");
       },
       completeOnboarding: ({ state, languagePreference }) => {
         setUser((current) => {
@@ -156,15 +140,13 @@ export function LocalAuthProvider({ children }: PropsWithChildren) {
           await signout(refresh);
         }
         setUser(null);
-        setIsGuest(false);
         setNeedsOnboarding(false);
         localStorage.removeItem(STORAGE_KEY);
         localStorage.removeItem(ACCESS_TOKEN_KEY);
         localStorage.removeItem(REFRESH_TOKEN_KEY);
-        localStorage.removeItem(GUEST_KEY);
       },
     }),
-    [isGuest, needsOnboarding, user],
+    [needsOnboarding, user],
   );
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
@@ -177,4 +159,3 @@ export function useLocalAuth() {
   }
   return context;
 }
-
