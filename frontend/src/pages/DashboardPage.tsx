@@ -6,6 +6,7 @@ import { useEffect, useMemo, useState } from "react";
 import { ForgePlan } from "../components/ForgePlan";
 import { GrowthChart } from "../components/GrowthChart";
 import { InputCard } from "../components/InputCard";
+import { InterventionHub } from "../components/InterventionHub";
 import { LoadingOverlay } from "../components/LoadingOverlay";
 import { Panel } from "../components/Panel";
 import { analyzeChild, getBackendHealth, type HealthPayload } from "../lib/api";
@@ -145,6 +146,8 @@ export function DashboardPage() {
             <StatusPill icon={<Sparkles className="h-4 w-4" />} label="Status" value={result ? "Result Ready" : loading ? "Assessing" : "Awaiting Input"} />
           </div>
         </div>
+
+        <InterventionHub result={result} />
       </section>
 
       <section id="dashboard-results" className="space-y-6">

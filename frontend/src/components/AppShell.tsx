@@ -19,7 +19,7 @@ export function AppShell({ children }: PropsWithChildren) {
               ["/", "Home"],
               ["/dashboard", "Assess"],
               ["/history", "History"],
-              ["/about", "About"],
+              ["/field", "Field"],
             ]
           : [
               ["/", "Home"],

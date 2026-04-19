@@ -34,6 +34,7 @@ export function Navbar() {
             <>
               <NavItem to="/dashboard" label={t("dashboard")} />
               <NavItem to="/history" label={t("history")} />
+              <NavItem to="/field" label="Field Mode" />
             </>
           ) : null}
           <NavItem to="/about" label="About" />

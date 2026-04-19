@@ -12,6 +12,7 @@ import { PrivacyPage } from "./pages/PrivacyPage";
 import { SignupPage } from "./pages/SignupPage";
 
 const DashboardPage = lazy(() => import("./pages/DashboardPage").then((module) => ({ default: module.DashboardPage })));
+const FieldPage = lazy(() => import("./pages/FieldPage").then((module) => ({ default: module.FieldPage })));
 const HistoryPage = lazy(() => import("./pages/HistoryPage").then((module) => ({ default: module.HistoryPage })));
 
 export default function App() {
@@ -34,6 +35,14 @@ export default function App() {
             element={
               <ProtectedRoute>
                 <HistoryPage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/field"
+            element={
+              <ProtectedRoute>
+                <FieldPage />
               </ProtectedRoute>
             }
           />
