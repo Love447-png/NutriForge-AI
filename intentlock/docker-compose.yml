@@ -1,0 +1,41 @@
+version: "3.9"
+services:
+  core:
+    build: ./core
+    ports:
+      - "7700:7700"
+    environment:
+      - DATABASE_URL=sqlite:///data/intentlock.db
+      - VERIFIER_URL=http://verifier:7701
+      - RUST_LOG=info
+      - PORT=7700
+    volumes:
+      - core_data:/data
+
+  verifier:
+    build: ./verifier
+    ports:
+      - "7701:7701"
+    environment:
+      - CORE_URL=http://core:7700
+      - MODEL_CACHE_DIR=/models
+      - POLICY_DIR=/app/policies
+    volumes:
+      - model_cache:/models
+      - ./verifier/policies:/app/policies
+
+  dashboard:
+    build: ./dashboard
+    ports:
+      - "5173:80"
+    environment:
+      - VITE_CORE_URL=http://localhost:7700
+      - VITE_VERIFIER_URL=http://localhost:7701
+    depends_on:
+      - core
+      - verifier
+
+volumes:
+  core_data:
+  model_cache:
+
